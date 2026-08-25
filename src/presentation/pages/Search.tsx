@@ -17,7 +17,9 @@ export function Search() {
     const timer = setTimeout(() => {
       setDebouncedQuery(query);
     }, 500); // 500ms debounce
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [query]);
 
   const {
@@ -120,7 +122,7 @@ export function Search() {
             <Button
               variant="secondary"
               onClick={() => {
-                refetch();
+                void refetch();
               }}
             >
               Reintentar

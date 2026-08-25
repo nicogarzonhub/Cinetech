@@ -30,7 +30,10 @@ Object.defineProperty(window, "matchMedia", {
 });
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 globalThis.ResizeObserver = class {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   observe() {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   unobserve() {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   disconnect() {}
 } as unknown as typeof ResizeObserver;

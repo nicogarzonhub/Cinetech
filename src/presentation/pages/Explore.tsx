@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router";
 
 export function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const yearFilter = searchParams.get("year") || "";
+  const yearFilter = searchParams.get("year") ?? "";
 
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;

@@ -52,18 +52,23 @@ export function Home() {
         </div>
       )}
 
-      {!isPending && !isError && movies && movies.length === 0 && (
+      {!isPending && !isError && movies.length === 0 && (
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <p className="mb-4 text-ink-muted">
             Ninguna película coincide con estos filtros
           </p>
-          <Button variant="secondary" onClick={() => {}}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              /* placeholder for clear filters */
+            }}
+          >
             Limpiar filtros
           </Button>
         </div>
       )}
 
-      {!isPending && !isError && movies && movies.length > 0 && (
+      {!isPending && !isError && movies.length > 0 && (
         <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
           {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
