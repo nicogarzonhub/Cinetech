@@ -19,6 +19,8 @@ describe("tmdbMoviesRepository.getTrendingThisWeek", () => {
               title: "El padrino",
               poster_path: "/poster.jpg",
               release_date: "1972-03-24",
+              vote_average: 9.2,
+              vote_count: 18000,
             },
           ],
         }),
@@ -36,6 +38,8 @@ describe("tmdbMoviesRepository.getTrendingThisWeek", () => {
           kind: "released",
           releaseDate: new Date("1972-03-24"),
         },
+        voteAverage: 9.2,
+        voteCount: 18000,
       },
     ]);
   });
@@ -45,7 +49,14 @@ describe("tmdbMoviesRepository.getTrendingThisWeek", () => {
       http.get(TRENDING_URL, () =>
         HttpResponse.json({
           results: [
-            { id: 1, title: "Sin póster", poster_path: null, release_date: "" },
+            {
+              id: 1,
+              title: "Sin póster",
+              poster_path: null,
+              release_date: "",
+              vote_average: 0,
+              vote_count: 0,
+            },
           ],
         }),
       ),
