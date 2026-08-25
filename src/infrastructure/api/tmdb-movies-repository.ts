@@ -1,10 +1,10 @@
-import { z } from 'zod';
-import { env } from '@/config/env';
-import { getReleaseStatus } from '@/domain/movie/release-status';
-import type { MovieSummary } from '@/domain/movie/movie-summary';
-import { ApiError } from '@/domain/shared/api-error';
-import type { MoviesRepository } from '@/application/ports/movies-repository';
-import { httpClient } from '@/infrastructure/http/http-client';
+import { z } from "zod";
+import { env } from "@/config/env";
+import { getReleaseStatus } from "@/domain/movie/release-status";
+import type { MovieSummary } from "@/domain/movie/movie-summary";
+import { ApiError } from "@/domain/shared/api-error";
+import type { MoviesRepository } from "@/application/ports/movies-repository";
+import { httpClient } from "@/infrastructure/http/http-client";
 
 // Solo los campos que la app realmente lee. TMDB manda muchos más; pedir
 // que el resto también cumpla forma sería acoplarse a un contrato que no
@@ -14,6 +14,8 @@ const tmdbMovieSummarySchema = z.object({
   title: z.string(),
   poster_path: z.string().nullable(),
   release_date: z.string(),
+  vote_average: z.number(),
+  vote_count: z.number(),
 });
 
 const trendingResponseSchema = z.object({
@@ -22,18 +24,25 @@ const trendingResponseSchema = z.object({
 
 // Tamaño pequeño a propósito: esta forma alimenta una cuadrícula, no una
 // ficha a pantalla completa.
-const POSTER_SIZE = 'w342';
+const POSTER_SIZE = "w342";
 
 function buildPosterUrl(posterPath: string | null): string | null {
-  return posterPath ? `${env.VITE_TMDB_IMAGE_BASE}/${POSTER_SIZE}${posterPath}` : null;
+  return posterPath
+    ? `${env.VITE_TMDB_IMAGE_BASE}/${POSTER_SIZE}${posterPath}`
+    : null;
 }
 
-function toMovieSummary(raw: z.infer<typeof tmdbMovieSummarySchema>, now: Date): MovieSummary {
+function toMovieSummary(
+  raw: z.infer<typeof tmdbMovieSummarySchema>,
+  now: Date,
+): MovieSummary {
   return {
     id: raw.id,
     title: raw.title,
     posterUrl: buildPosterUrl(raw.poster_path),
     releaseStatus: getReleaseStatus(raw.release_date, now),
+    voteAverage: raw.vote_average,
+    voteCount: raw.vote_count,
   };
 }
 
@@ -45,11 +54,31 @@ function toMovieSummary(raw: z.infer<typeof tmdbMovieSummarySchema>, now: Date):
  */
 export const tmdbMoviesRepository: MoviesRepository = {
   async getTrendingThisWeek(now: Date): Promise<MovieSummary[]> {
-    const { data } = await httpClient.get<unknown>('/trending/movie/week');
+    const { data } = await httpClient.get<unknown>("/trending/movie/week");
 
     const parsed = trendingResponseSchema.safeParse(data);
     if (!parsed.success) {
-      throw new ApiError('unknown', 'La respuesta de TMDB no tiene el formato esperado.');
+      throw new ApiError(
+        "unknown",
+        "La respuesta de TMDB no tiene el formato esperado.",
+      );
+    }
+
+    return parsed.data.results.map((movie) => toMovieSummary(movie, now));
+  },
+
+  async searchMovies(query: string, now: Date): Promise<MovieSummary[]> {
+    if (!query) return [];
+    const { data } = await httpClient.get<unknown>("/search/movie", {
+      params: { query, language: "es-MX" },
+    });
+
+    const parsed = trendingResponseSchema.safeParse(data);
+    if (!parsed.success) {
+      throw new ApiError(
+        "unknown",
+        "La respuesta de TMDB no tiene el formato esperado.",
+      );
     }
 
     return parsed.data.results.map((movie) => toMovieSummary(movie, now));

@@ -1,4 +1,4 @@
-import { setupServer } from 'msw/node';
+import { setupServer } from "msw/node";
 
 // Arranca sin simulaciones a propósito: cada una se añade con la funcionalidad
 // que la necesita, con respuestas reales de la API como base.

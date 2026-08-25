@@ -4,18 +4,18 @@
  * error crudo de axios ni un código HTTP suelto: solo esto.
  */
 export type ApiErrorReason =
-  | 'not-found' // TMDB status_code 34
-  | 'invalid-request' // TMDB status_code 22
-  | 'rate-limited' // HTTP 429
-  | 'network' // sin respuesta: la red cayó
-  | 'unknown';
+  | "not-found" // TMDB status_code 34
+  | "invalid-request" // TMDB status_code 22
+  | "rate-limited" // HTTP 429
+  | "network" // sin respuesta: la red cayó
+  | "unknown";
 
 export class ApiError extends Error {
   readonly reason: ApiErrorReason;
 
   constructor(reason: ApiErrorReason, message: string) {
     super(message);
-    this.name = 'ApiError';
+    this.name = "ApiError";
     this.reason = reason;
   }
 }

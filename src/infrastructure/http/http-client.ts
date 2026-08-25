@@ -1,6 +1,6 @@
-import axios, { AxiosError } from 'axios';
-import { env } from '@/config/env';
-import { ApiError } from '@/domain/shared/api-error';
+import axios, { AxiosError } from "axios";
+import { env } from "@/config/env";
+import { ApiError } from "@/domain/shared/api-error";
 
 /**
  * Única instancia de axios del proyecto. Solo este directorio puede
@@ -22,25 +22,37 @@ httpClient.interceptors.response.use(
   (response) => response,
   (error: unknown) => {
     if (!(error instanceof AxiosError)) {
-      return Promise.reject(new ApiError('unknown', 'Ocurrió un error inesperado.'));
+      return Promise.reject(
+        new ApiError("unknown", "Ocurrió un error inesperado."),
+      );
     }
 
     if (!error.response) {
-      return Promise.reject(new ApiError('network', 'No hay conexión con el servidor.'));
+      return Promise.reject(
+        new ApiError("network", "No hay conexión con el servidor."),
+      );
     }
 
     if (error.response.status === 429) {
-      return Promise.reject(new ApiError('rate-limited', 'Vamos demasiado rápido, reintentando.'));
+      return Promise.reject(
+        new ApiError("rate-limited", "Vamos demasiado rápido, reintentando."),
+      );
     }
 
     const body = error.response.data as TmdbErrorBody | undefined;
     if (body?.status_code === 34) {
-      return Promise.reject(new ApiError('not-found', 'No encontramos ese recurso.'));
+      return Promise.reject(
+        new ApiError("not-found", "No encontramos ese recurso."),
+      );
     }
     if (body?.status_code === 22) {
-      return Promise.reject(new ApiError('invalid-request', 'La solicitud no es válida.'));
+      return Promise.reject(
+        new ApiError("invalid-request", "La solicitud no es válida."),
+      );
     }
 
-    return Promise.reject(new ApiError('unknown', 'No pudimos completar la petición.'));
+    return Promise.reject(
+      new ApiError("unknown", "No pudimos completar la petición."),
+    );
   },
 );

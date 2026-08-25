@@ -1,7 +1,7 @@
-import type { ButtonHTMLAttributes } from 'react';
-import clsx from 'clsx';
+import type { ButtonHTMLAttributes } from "react";
+import clsx from "clsx";
 
-export type ButtonVariant = 'primary' | 'secondary' | 'danger';
+export type ButtonVariant = "primary" | "secondary" | "danger";
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
@@ -21,8 +21,8 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
  */
 export function Button({
   children,
-  variant = 'primary',
-  type = 'button',
+  variant = "primary",
+  type = "button",
   className,
   ...rest
 }: ButtonProps) {
@@ -30,12 +30,13 @@ export function Button({
     <button
       type={type}
       className={clsx(
-        'inline-flex min-h-touch items-center justify-center rounded-card px-4 text-sm font-semibold transition-colors',
-        'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand',
-        'disabled:cursor-not-allowed disabled:opacity-50',
-        variant === 'primary' && 'bg-brand text-surface hover:opacity-90',
-        variant === 'secondary' && 'bg-surface-raised text-ink hover:opacity-90',
-        variant === 'danger' && 'bg-danger text-surface hover:opacity-90',
+        "inline-flex min-h-touch items-center justify-center rounded-card px-4 text-sm font-semibold transition-colors",
+        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+        "disabled:cursor-not-allowed disabled:opacity-50",
+        variant === "primary" && "bg-brand text-surface hover:opacity-90",
+        variant === "secondary" &&
+          "bg-surface-raised text-ink hover:opacity-90",
+        variant === "danger" && "bg-danger text-surface hover:opacity-90",
         className,
       )}
       {...rest}

@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { tmdbMoviesRepository } from '@/infrastructure/api/tmdb-movies-repository';
+import { useQuery } from "@tanstack/react-query";
+import { tmdbMoviesRepository } from "@/infrastructure/api/tmdb-movies-repository";
 
 /**
  * Tendencias de la semana, para la portada. Clave jerárquica
@@ -8,7 +8,7 @@ import { tmdbMoviesRepository } from '@/infrastructure/api/tmdb-movies-repositor
  */
 export function useTrendingMovies() {
   return useQuery({
-    queryKey: ['movies', 'trending', 'week'],
+    queryKey: ["movies", "trending", "week"],
     queryFn: () => tmdbMoviesRepository.getTrendingThisWeek(new Date()),
   });
 }

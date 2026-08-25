@@ -1,45 +1,46 @@
+import { Link } from "react-router";
 
 export function Header() {
   return (
     <header className="flex flex-wrap items-center gap-4 border-b border-surface-raised bg-surface px-4 py-3 text-ink">
-      <a href="/" className="flex items-center gap-2 font-semibold">
+      <Link to="/" className="flex items-center gap-2 font-semibold">
         <img src="/favicon.svg" alt="" className="h-8 w-8" />
         Cinetech
-      </a>
+      </Link>
 
       <nav aria-label="Principal">
         <ul className="flex gap-4 text-sm">
           <li>
-            <a
-              href="/"
+            <Link
+              to="/"
               className="rounded-card px-2 py-1 hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
             >
               Inicio
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/explorar"
+            <Link
+              to="/explorar"
               className="rounded-card px-2 py-1 hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
             >
               Películas
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/cineteca"
+            <Link
+              to="/cineteca"
               className="rounded-card px-2 py-1 hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
             >
               Cineteca
-            </a>
+            </Link>
           </li>
           <li>
-            <a
-              href="/buscar"
+            <Link
+              to="/buscar"
               className="rounded-card px-2 py-1 hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
             >
               Búsqueda
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>

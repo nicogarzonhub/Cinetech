@@ -1,4 +1,4 @@
-import type { ReleaseStatus } from './movie-summary';
+import type { ReleaseStatus } from "./movie-summary";
 
 /**
  * Traduce la fecha de estreno cruda de TMDB a un estado del dominio.
@@ -13,12 +13,12 @@ export function getReleaseStatus(
   now: Date,
 ): ReleaseStatus {
   // TMDB no manda `null`: manda `""`. Los dos significan lo mismo.
-  if (!rawReleaseDate) return { kind: 'unknown' };
+  if (!rawReleaseDate) return { kind: "unknown" };
 
   const releaseDate = new Date(rawReleaseDate);
-  if (Number.isNaN(releaseDate.getTime())) return { kind: 'unknown' };
+  if (Number.isNaN(releaseDate.getTime())) return { kind: "unknown" };
 
   return releaseDate.getTime() > now.getTime()
-    ? { kind: 'upcoming', releaseDate }
-    : { kind: 'released', releaseDate };
+    ? { kind: "upcoming", releaseDate }
+    : { kind: "released", releaseDate };
 }

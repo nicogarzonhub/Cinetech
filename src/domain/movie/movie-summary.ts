@@ -9,6 +9,8 @@ export type MovieSummary = {
   title: string;
   posterUrl: string | null;
   releaseStatus: ReleaseStatus;
+  voteAverage: number;
+  voteCount: number;
 };
 
 /**
@@ -18,6 +20,6 @@ export type MovieSummary = {
  * casos la respuesta correcta es "no lo sé", no "1 de enero de 1970".
  */
 export type ReleaseStatus =
-  | { kind: 'unknown' }
-  | { kind: 'released'; releaseDate: Date }
-  | { kind: 'upcoming'; releaseDate: Date };
+  | { kind: "unknown" }
+  | { kind: "released"; releaseDate: Date }
+  | { kind: "upcoming"; releaseDate: Date };

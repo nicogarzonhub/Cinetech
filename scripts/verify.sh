@@ -19,23 +19,23 @@ fail() { printf '\n%b✖ GATE EN ROJO — %s%b\n' "$RED" "$1" "$NC"; exit 1; }
 START=$(date +%s)
 
 step "[1/5] Formato — Prettier"
-pnpm format:check || fail "hay archivos sin formatear (corran: pnpm format)"
+npx pnpm format:check || fail "hay archivos sin formatear (corran: npx pnpm format)"
 
 step "[2/5] Linter — ESLint, cero advertencias"
-pnpm lint || fail "el linter encontró problemas"
+npx pnpm lint || fail "el linter encontró problemas"
 
 step "[3/5] Tipos — tsc --noEmit"
-pnpm check-types || fail "errores de tipos"
+npx pnpm check-types || fail "errores de tipos"
 
 if [ "$MODE" = "--quick" ]; then
   printf '\n%b✔ GATE RÁPIDO EN VERDE en %ss%b\n' "$GREEN" "$(( $(date +%s) - START ))" "$NC"; exit 0
 fi
 
 step "[4/5] Pruebas — Vitest"
-pnpm test || fail "pruebas rojas o cobertura por debajo del umbral"
+npx pnpm test || fail "pruebas rojas o cobertura por debajo del umbral"
 
 step "[5/5] Build de producción"
-pnpm build || fail "el build falló"
+npx pnpm build || fail "el build falló"
 
 bash scripts/check-versions.sh --gate || fail "hay una dependencia deprecada"
 
