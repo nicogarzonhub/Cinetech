@@ -1,4 +1,5 @@
 import type { MovieSummary } from "@/domain/movie/movie-summary";
+import type { MovieDetail } from "@/domain/movie/movie-detail";
 
 /**
  * Puerto: "algo que trae películas". La aplicación conoce esta forma y
@@ -9,4 +10,5 @@ import type { MovieSummary } from "@/domain/movie/movie-summary";
 export interface MoviesRepository {
   getTrendingThisWeek(now: Date): Promise<MovieSummary[]>;
   searchMovies(query: string, now: Date): Promise<MovieSummary[]>;
+  getMovieDetail(id: number): Promise<MovieDetail>;
 }
