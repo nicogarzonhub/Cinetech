@@ -8,7 +8,7 @@ import query from "@tanstack/eslint-plugin-query";
 import prettier from "eslint-config-prettier";
 
 export default tseslint.config(
-  { ignores: ["dist", "coverage"] },
+  { ignores: ["dist", "coverage", "eslint.config.js"] },
 
   js.configs.recommended,
   tseslint.configs.strictTypeChecked,
@@ -26,7 +26,7 @@ export default tseslint.config(
     languageOptions: {
       globals: globals.browser,
       parserOptions: {
-        projectService: true,
+        projectService: { allowDefaultProject: ["*.js"] },
         tsconfigRootDir: import.meta.dirname,
       },
     },

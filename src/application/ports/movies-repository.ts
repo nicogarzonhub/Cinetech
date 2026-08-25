@@ -6,7 +6,7 @@ import type { MovieSummary } from "@/domain/movie/movie-summary";
  * `now` entra como parámetro por la misma razón que en `getReleaseStatus`:
  * determinismo, sin reloj oculto adentro.
  */
-export type MoviesRepository = {
+export interface MoviesRepository {
   getTrendingThisWeek(now: Date): Promise<MovieSummary[]>;
   searchMovies(query: string, now: Date): Promise<MovieSummary[]>;
-};
+}

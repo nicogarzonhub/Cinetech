@@ -4,14 +4,14 @@
  * (esa trae reparto, tráilers, presupuesto...): es justo lo necesario
  * para pintar una tarjeta en una cuadrícula.
  */
-export type MovieSummary = {
+export interface MovieSummary {
   id: number;
   title: string;
   posterUrl: string | null;
   releaseStatus: ReleaseStatus;
   voteAverage: number;
   voteCount: number;
-};
+}
 
 /**
  * El estreno de una película es uno de tres estados, nunca "una fecha que

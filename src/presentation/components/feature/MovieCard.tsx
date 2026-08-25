@@ -2,10 +2,13 @@ import type { MovieSummary, ReleaseStatus } from "@/domain/movie/movie-summary";
 import { Badge, type BadgeTone } from "@/presentation/components/ui/Badge";
 import { Skeleton } from "@/presentation/components/ui/Skeleton";
 import { movieCardCopy } from "@/presentation/copy/movieCard";
+import { useCineteca } from "@/presentation/providers/CinetecaProvider";
+import { Bookmark, BookmarkCheck } from "lucide-react";
+import { Link } from "react-router";
 
-export type MovieCardProps = {
+export interface MovieCardProps {
   movie: MovieSummary;
-};
+}
 
 const TONE_BY_STATUS: Record<ReleaseStatus["kind"], BadgeTone> = {
   released: "released",
@@ -42,56 +45,67 @@ function releaseSentence(status: ReleaseStatus): string {
 
 export function MovieCard({ movie }: MovieCardProps) {
   const tone = TONE_BY_STATUS[movie.releaseStatus.kind];
-  const year =
-    movie.releaseStatus.kind !== "unknown"
-      ? movie.releaseStatus.releaseDate.getFullYear()
-      : "";
+  const { isMovieSaved, saveMovie, removeMovie } = useCineteca();
+  const saved = isMovieSaved(movie.id);
+
+  const toggleSave = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (saved) {
+      removeMovie(movie.id);
+    } else {
+      saveMovie(movie);
+    }
+  };
 
   return (
-    <a
-      href={`/pelicula/${String(movie.id)}`}
-      className="flex flex-col overflow-hidden rounded-card bg-surface-raised text-ink transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-    >
-      <div className="aspect-poster w-full overflow-hidden bg-surface">
-        {movie.posterUrl ? (
-          <img
-            src={movie.posterUrl}
-            alt=""
-            loading="lazy"
-            width={342}
-            height={513}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center px-2 text-center text-xs text-ink-muted">
-            {movieCardCopy.posterFallback}
-          </div>
-        )}
-      </div>
-
-      <div className="flex flex-1 flex-col gap-2 p-3">
-        <h3 className="line-clamp-2 text-sm font-semibold">{movie.title}</h3>
-
-        <div className="flex items-center gap-2 text-xs text-ink-muted">
-          {year && <span>{year}</span>}
-          {/* Aquí iría la duración si la tuviéramos del endpoint de TMDB */}
-        </div>
-
-        <div className="mt-auto flex flex-col items-start gap-2">
-          {movie.voteCount > 0 && (
-            <div className="flex items-center gap-1 text-sm">
-              <span className="font-medium">
-                {movie.voteAverage.toFixed(1)}
-              </span>
-              <span className="text-xs text-ink-muted">
-                ({movie.voteCount} {movie.voteCount === 1 ? "voto" : "votos"})
-              </span>
+    <div className="group relative">
+      <Link
+        to={`/pelicula/${String(movie.id)}`}
+        className="flex h-full flex-col overflow-hidden rounded-card bg-surface-raised text-ink transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      >
+        <div className="aspect-poster w-full overflow-hidden bg-surface">
+          {movie.posterUrl ? (
+            <img
+              src={movie.posterUrl}
+              alt=""
+              loading="lazy"
+              width={342}
+              height={513}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center px-2 text-center text-xs text-ink-muted">
+              {movieCardCopy.posterFallback}
             </div>
           )}
-          <Badge tone={tone}>{statusWord(movie.releaseStatus)}</Badge>
         </div>
-      </div>
-    </a>
+
+        <div className="flex flex-1 flex-col gap-2 p-3">
+          <h3 className="line-clamp-2 pr-8 text-sm font-semibold">
+            {movie.title}
+          </h3>
+
+          <div className="mt-auto flex flex-col items-start gap-1">
+            <Badge tone={tone}>{statusWord(movie.releaseStatus)}</Badge>
+            <p className="text-xs text-ink-muted">
+              {releaseSentence(movie.releaseStatus)}
+            </p>
+          </div>
+        </div>
+      </Link>
+
+      <button
+        onClick={toggleSave}
+        aria-label={saved ? "Quitar de Cineteca" : "Guardar en Cineteca"}
+        className="absolute right-2 top-2 rounded-full bg-surface/80 p-2 text-ink backdrop-blur-sm hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand"
+      >
+        {saved ? (
+          <BookmarkCheck className="h-5 w-5 text-brand" />
+        ) : (
+          <Bookmark className="h-5 w-5" />
+        )}
+      </button>
+    </div>
   );
 }
 

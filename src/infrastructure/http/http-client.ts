@@ -12,7 +12,10 @@ export const httpClient = axios.create({
   headers: { Authorization: `Bearer ${env.VITE_TMDB_READ_TOKEN}` },
 });
 
-type TmdbErrorBody = { status_code?: number; status_message?: string };
+interface TmdbErrorBody {
+  status_code?: number;
+  status_message?: string;
+}
 
 // TMDB manda su propio código en el cuerpo de la respuesta, y ese código
 // NO coincide con el HTTP: "no encontrado" es su 34 sobre un 404 HTTP,
