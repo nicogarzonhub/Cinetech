@@ -4,7 +4,11 @@ export function Header() {
   return (
     <header className="flex flex-wrap items-center gap-4 border-b border-surface-raised bg-surface px-4 py-3 text-ink">
       <Link to="/" className="flex items-center gap-2 font-semibold">
-        <img src="/favicon.svg" alt="" className="h-8 w-8" />
+        <img
+          src={`${import.meta.env.BASE_URL}favicon.svg`}
+          alt=""
+          className="h-8 w-8"
+        />
         Cinetech
       </Link>
 

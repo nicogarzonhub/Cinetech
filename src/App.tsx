@@ -8,7 +8,7 @@ import { Library } from "@/presentation/pages/Library";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route path="/" element={<RootLayout />}>
           <Route index element={<Home />} />

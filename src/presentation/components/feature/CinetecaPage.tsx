@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import { useCineteca } from "@/presentation/providers/CinetecaProvider";
 import { MovieCard } from "@/presentation/components/feature/MovieCard";
 import { Button } from "@/presentation/components/ui/Button";
@@ -63,7 +64,7 @@ export function CinetecaPage() {
           <div className="flex flex-col items-center justify-center rounded-card bg-surface-raised p-12 text-center text-ink-muted">
             <p className="mb-4">Tu cineteca está vacía</p>
             <Button asChild>
-              <a href="/">Explorar películas</a>
+              <Link to="/">Explorar películas</Link>
             </Button>
           </div>
         ) : (
