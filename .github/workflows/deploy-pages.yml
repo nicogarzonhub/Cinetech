@@ -46,6 +46,12 @@ jobs:
         env:
           VITE_TMDB_READ_TOKEN: ${{ secrets.VITE_TMDB_READ_TOKEN }}
 
+      - name: SPA fallback for deep links
+        # GitHub Pages no reescribe rutas: sirve 404.html para cualquier
+        # ruta no encontrada. Al ser una copia de index.html, BrowserRouter
+        # recupera el control del lado del cliente en vez de mostrar un 404.
+        run: cp dist/index.html dist/404.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
