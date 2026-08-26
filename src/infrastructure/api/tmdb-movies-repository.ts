@@ -21,6 +21,7 @@ const tmdbMovieSummarySchema = z.object({
   release_date: z.string(),
   vote_average: z.number(),
   vote_count: z.number(),
+  genre_ids: z.array(z.number()).default([]),
 });
 
 const trendingResponseSchema = z.object({
@@ -109,6 +110,7 @@ function toMovieSummary(
     releaseStatus: getReleaseStatus(raw.release_date, now),
     voteAverage: raw.vote_average,
     voteCount: raw.vote_count,
+    genreIds: raw.genre_ids,
   };
 }
 

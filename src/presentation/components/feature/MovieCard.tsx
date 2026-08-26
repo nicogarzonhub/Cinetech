@@ -80,14 +80,14 @@ export function MovieCard({ movie }: MovieCardProps) {
           )}
         </div>
 
-        <div className="flex flex-1 flex-col gap-2 p-3">
-          <h3 className="line-clamp-2 pr-8 text-sm font-semibold">
+        <div className="flex flex-1 flex-col gap-1.5 p-2.5">
+          <h3 className="line-clamp-2 pr-7 text-xs font-semibold sm:text-sm">
             {movie.title}
           </h3>
 
           <div className="mt-auto flex flex-col items-start gap-1">
             <Badge tone={tone}>{statusWord(movie.releaseStatus)}</Badge>
-            <p className="text-xs text-ink-muted">
+            <p className="text-[0.6875rem] text-ink-muted sm:text-xs">
               {releaseSentence(movie.releaseStatus)}
             </p>
           </div>
@@ -97,12 +97,12 @@ export function MovieCard({ movie }: MovieCardProps) {
       <button
         onClick={toggleSave}
         aria-label={saved ? "Quitar de Cineteca" : "Guardar en Cineteca"}
-        className="absolute right-2 top-2 rounded-full bg-surface/80 p-2 text-ink backdrop-blur-sm hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand"
+        className="absolute right-1.5 top-1.5 rounded-full bg-surface/80 p-1.5 text-ink backdrop-blur-sm hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand"
       >
         {saved ? (
-          <BookmarkCheck className="h-5 w-5 text-brand" />
+          <BookmarkCheck className="h-4 w-4 text-brand" />
         ) : (
-          <Bookmark className="h-5 w-5" />
+          <Bookmark className="h-4 w-4" />
         )}
       </button>
     </div>

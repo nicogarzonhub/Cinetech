@@ -21,6 +21,7 @@ describe("tmdbMoviesRepository.getTrendingThisWeek", () => {
               release_date: "1972-03-24",
               vote_average: 9.2,
               vote_count: 18000,
+              genre_ids: [18, 80],
             },
           ],
         }),
@@ -40,6 +41,7 @@ describe("tmdbMoviesRepository.getTrendingThisWeek", () => {
         },
         voteAverage: 9.2,
         voteCount: 18000,
+        genreIds: [18, 80],
       },
     ]);
   });
@@ -56,6 +58,7 @@ describe("tmdbMoviesRepository.getTrendingThisWeek", () => {
               release_date: "",
               vote_average: 0,
               vote_count: 0,
+              genre_ids: [],
             },
           ],
         }),

@@ -11,6 +11,8 @@ export interface MovieSummary {
   releaseStatus: ReleaseStatus;
   voteAverage: number;
   voteCount: number;
+  /** IDs de género entregados por los endpoints de listado de TMDB. */
+  genreIds?: number[];
 }
 
 /**

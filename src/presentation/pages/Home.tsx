@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/presentation/components/ui/Button";
 import {
   MovieCard,
@@ -8,6 +9,27 @@ import { Link } from "react-router";
 
 export function Home() {
   const { data: movies, isPending, isError, refetch } = useTrendingMovies();
+  const [filter, setFilter] = useState<
+    "trending" | "released" | "upcoming" | "top-rated"
+  >("trending");
+
+  const visibleMovies = (() => {
+    if (!movies) return [];
+    if (filter === "released")
+      return movies.filter((movie) => movie.releaseStatus.kind === "released");
+    if (filter === "upcoming")
+      return movies.filter((movie) => movie.releaseStatus.kind === "upcoming");
+    if (filter === "top-rated")
+      return [...movies].sort((a, b) => b.voteAverage - a.voteAverage);
+    return movies;
+  })();
+
+  const filterLabel = {
+    trending: "Tendencias de la semana",
+    released: "Películas estrenadas",
+    upcoming: "Próximos estrenos",
+    "top-rated": "Mejor valoradas",
+  }[filter];
 
   return (
     <main className="min-h-screen bg-surface p-8 text-ink">
@@ -15,8 +37,8 @@ export function Home() {
         <h1 className="text-2xl font-semibold">Cinetech</h1>
       </div>
 
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Tendencias de la semana</h2>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+        <h2 className="text-lg font-semibold">{filterLabel}</h2>
         <Link
           to="/explorar"
           className="text-sm font-medium text-brand hover:underline"
@@ -25,9 +47,28 @@ export function Home() {
         </Link>
       </div>
 
+      <div className="mb-6 flex flex-wrap gap-2" aria-label="Filtrar películas">
+        {[
+          ["trending", "Tendencias"],
+          ["released", "Estrenadas"],
+          ["upcoming", "Por estrenar"],
+          ["top-rated", "Mejor valoradas"],
+        ].map(([value, label]) => (
+          <Button
+            key={value}
+            variant={filter === value ? "primary" : "secondary"}
+            onClick={() => {
+              setFilter(value as typeof filter);
+            }}
+          >
+            {label}
+          </Button>
+        ))}
+      </div>
+
       {isPending && (
         <section
-          className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4"
+          className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6"
           aria-busy="true"
           aria-label="Cargando películas"
         >
@@ -52,10 +93,10 @@ export function Home() {
         </div>
       )}
 
-      {!isPending && !isError && movies.length === 0 && (
+      {!isPending && !isError && visibleMovies.length === 0 && (
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <p className="mb-4 text-ink-muted">
-            Ninguna película coincide con estos filtros
+            No hay películas disponibles para este filtro
           </p>
           <Button
             variant="secondary"
@@ -68,9 +109,9 @@ export function Home() {
         </div>
       )}
 
-      {!isPending && !isError && movies.length > 0 && (
-        <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {movies.map((movie) => (
+      {!isPending && !isError && visibleMovies.length > 0 && (
+        <section className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+          {visibleMovies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </section>

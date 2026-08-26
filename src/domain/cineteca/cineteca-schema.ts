@@ -19,6 +19,8 @@ const movieSummarySchema = z.object({
   title: z.string(),
   posterUrl: z.string().nullable(),
   releaseStatus: releaseStatusSchema,
+  // Las bibliotecas guardadas antes de añadir géneros siguen siendo válidas.
+  genreIds: z.array(z.number()).optional(),
 });
 
 export const customListSchema = z.object({

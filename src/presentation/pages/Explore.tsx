@@ -1,8 +1,17 @@
 import { useSearchParams } from "react-router";
+import { MovieGenreRows } from "@/presentation/components/feature/MovieGenreRows";
+import { useTrendingMovies } from "@/presentation/hooks/useTrendingMovies";
 
 export function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();
   const yearFilter = searchParams.get("year") ?? "";
+  const { data: movies, isPending, isError, refetch } = useTrendingMovies();
+  const moviesForYear = movies?.filter((movie) => {
+    if (!yearFilter || movie.releaseStatus.kind === "unknown") return true;
+    return (
+      String(movie.releaseStatus.releaseDate.getUTCFullYear()) === yearFilter
+    );
+  });
 
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -30,10 +39,20 @@ export function Explore() {
         </select>
       </div>
 
-      <div className="text-ink-muted">
-        {/* Aquí irán los resultados filtrados */}
-        <p>Mostrando resultados para: {yearFilter || "Todos los años"}</p>
-      </div>
+      {isError ? (
+        <div className="flex flex-wrap items-center gap-3" role="alert">
+          <p>No pudimos cargar las categorías de películas.</p>
+          <button
+            type="button"
+            className="rounded-card bg-surface-raised px-4 py-2 font-semibold hover:opacity-90"
+            onClick={() => void refetch()}
+          >
+            Reintentar
+          </button>
+        </div>
+      ) : (
+        <MovieGenreRows movies={moviesForYear} isLoading={isPending} />
+      )}
     </main>
   );
 }
